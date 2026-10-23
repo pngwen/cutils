@@ -60,12 +60,10 @@ static void int_free(void *obj)
 
 int main(void)
 {
-    /* 1. Allocate list. */
     list_t *lst = list_alloc(int_copy, int_free);
     CHECK(lst != NULL, "list_alloc returns non‑NULL");
     CHECK(list_size(lst) == 0, "size is zero after alloc");
 
-    /* 2. Push back a sequence and pop front. */
     for (int i = 0; i < 10; ++i) {
         int val = i;
         CHECK(list_push_back(lst, &val) == 0, "list_push_back succeeded");
@@ -104,7 +102,29 @@ int main(void)
     CHECK(peek != NULL && *(int *)peek == 42, "front returns original copy");
     int_free(peek);
 
-    /* Re‑populate and cause many allocations. */
+    /* 5. Test list_insert before a specific node. */
+    /* Populate list with values 0,1,2 */
+    int zero = 0, one = 1, two = 2;
+    CHECK(list_push_back(lst, &zero) == 0, "push 0");
+    CHECK(list_push_back(lst, &one) == 0, "push 1");
+    CHECK(list_push_back(lst, &two) == 0, "push 2");
+    /* Insert 99 before node containing 1 (second node) */
+    int ninety_nine = 99;
+    list_node_t *second = lst->head->next; /* node with value 1 */
+    CHECK(list_insert(lst, second, &ninety_nine) == 0, "list_insert before second node");
+    CHECK(list_size(lst) == 4, "size after insert");
+    /* Expected order: 0,99,1,2 */
+    int expected[] = {0, 99, 1, 2};
+    for (size_t i = 0; i < 4; ++i) {
+        void *out = NULL;
+        CHECK(list_pop_front(lst, &out) == 0, "pop after insert");
+        CHECK(out != NULL, "pop non‑NULL after insert");
+        CHECK(*(int *)out == expected[i], "order after insert is correct");
+        int_free(out);
+    }
+    CHECK(list_size(lst) == 0, "list empty after insert test");
+
+    /* 6. Re‑populate and cause many allocations. */
     for (int i = 0; i < 50; ++i) {
         CHECK(list_push_back(lst, &i) == 0, "fill list");
     }
