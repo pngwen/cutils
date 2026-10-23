@@ -34,7 +34,7 @@
 #include <stdlib.h>
 
 /* Include the public string header.  The test directory is a sibling of `include/`. */
-#include "../include/cstr.h"
+#include <cstr.h>
 
 int main(void)
 {

@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/deque.h"
+#include <deque.h>
 
 static int g_failures = 0;
 

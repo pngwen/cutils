@@ -29,7 +29,7 @@
  * only through the public map_* API declared in map.h.
  */
 
-#include "../include/map.h"
+#include <map.h>
 
 #include <stdlib.h>
 

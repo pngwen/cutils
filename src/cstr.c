@@ -26,7 +26,7 @@
  * string.c – implementation of the dynamic string API based on the vector.
  */
 
-#include "../include/cstr.h"
+#include <cstr.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>

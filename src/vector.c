@@ -26,7 +26,7 @@
  * vector.c – implementation of the generic vector functions.
  */
 
-#include "../include/vector.h"
+#include <vector.h>
 #include <stdlib.h>
 #include <string.h>
 

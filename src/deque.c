@@ -26,7 +26,7 @@
  * deque.c – implementation of a generic double‑ended queue using a circular buffer.
  */
 
-#include "../include/deque.h"
+#include <deque.h>
 #include <stdlib.h>
 
 /* Hidden header placed directly before the public pointer array. */

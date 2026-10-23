@@ -58,7 +58,7 @@ $(SHARED_LIB): $(OBJ_FILES) | $(LIB_DIR)
 
 # ── Build each test executable (statically linked) ────────────
 $(BIN_DIR)/%: $(TEST_DIR)/%.c $(STATIC_LIB) | $(BIN_DIR)
-	$(CC) $(CFLAGS) $< -L$(LIB_DIR) -lcutils -o $@
+	$(CC) $(CFLAGS) $< $(LIB_DIR)/libcutils.a -o $@
 
 # ── Clean target ─────────────────────────────────────────────
 .PHONY: clean

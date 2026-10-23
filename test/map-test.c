@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/map.h"
+#include <map.h>
 
 /* ------------------------------------------------------------------ */
 /* Key‑value integer type helpers                                     */

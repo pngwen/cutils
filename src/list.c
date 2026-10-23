@@ -27,7 +27,7 @@
  * its elements.
  */
 
-#include "../include/list.h"
+#include <list.h>
 #include <stdlib.h>
 
 /* Internal node structure. */
