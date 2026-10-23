@@ -14,6 +14,9 @@
 - Header files (*.h) belong in the `include/` directory.
 - Implementation files (*.c) belong in the `src/` directory.
 - Test programs (single‑file executables) belong in a `test/` directory.
+- Compiled programs (executables) belong in the `bin/` directory.
+- Combined library files (both static `.a` and dynamic `.so`) belong in the `lib/` directory.
+- All test programs are to be statically linked.
 
 ## Formatting
 - **K&R brace style** (brace on the same line as the function/statement).
