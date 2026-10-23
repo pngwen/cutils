@@ -30,21 +30,7 @@
 #include <list.h>
 #include <stdlib.h>
 
-/* Internal node structure. */
-typedef struct list_node {
-    void *data;
-    struct list_node *prev;
-    struct list_node *next;
-} list_node_t;
 
-/* List structure – hidden from users. */
-struct list {
-    list_node_t *head;
-    list_node_t *tail;
-    list_copy_f copy;
-    list_free_f free;
-    size_t size;
-};
 
 /** Allocate a new empty list. */
 list_t *list_alloc(list_copy_f copy, list_free_f free)
@@ -73,27 +59,7 @@ void list_free(list_t *l)
     free(l);
 }
 
-static int list_insert_node(list_t *l, list_node_t *node, int front)
-{
-    if (!l || !node) return -1;
-    node->prev = node->next = NULL;
-    if (l->size == 0) {
-        l->head = l->tail = node;
-    } else if (front) {
-        node->next = l->head;
-        l->head->prev = node;
-        l->head = node;
-    } else {
-        node->prev = l->tail;
-        l->tail->next = node;
-        l->tail = node;
-    }
-    l->size += 1;
-    return 0;
-}
-
-/** Push a copy of @p item to the back of the list. */
-int list_push_back(list_t *l, const void *item)
+int list_insert(list_t *l, list_node_t *pos, const void *item)
 {
     if (!l) return -1;
     void *copy = l->copy(item);
@@ -101,19 +67,37 @@ int list_push_back(list_t *l, const void *item)
     list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t));
     if (!node) { if (l->free) l->free(copy); return -1; }
     node->data = copy;
-    return list_insert_node(l, node, 0);
+    node->prev = node->next = NULL;
+    if (l->size == 0) {
+        l->head = l->tail = node;
+    } else if (pos == NULL) { /* insert at back */
+        node->prev = l->tail;
+        l->tail->next = node;
+        l->tail = node;
+    } else { /* insert before pos */
+        node->next = pos;
+        node->prev = pos->prev;
+        if (pos->prev) pos->prev->next = node;
+        else l->head = node;
+        pos->prev = node;
+    }
+    l->size++;
+    return 0;
+}
+
+
+/** Push a copy of @p item to the back of the list. */
+int list_push_back(list_t *l, const void *item)
+{
+    if (!l) return -1;
+    return list_insert(l, NULL, item);
 }
 
 /** Push a copy of @p item to the front of the list. */
 int list_push_front(list_t *l, const void *item)
 {
     if (!l) return -1;
-    void *copy = l->copy(item);
-    if (!copy) return -1;
-    list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t));
-    if (!node) { if (l->free) l->free(copy); return -1; }
-    node->data = copy;
-    return list_insert_node(l, node, 1);
+    return list_insert(l, l->head, item);
 }
 
 static int list_pop_node(list_t *l, list_node_t *node, void **out)

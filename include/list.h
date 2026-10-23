@@ -47,7 +47,21 @@ typedef void *(*list_copy_f)(const void *src);
  */
 typedef void (*list_free_f)(void *obj);
 
-/** Opaque list handle. */
+typedef struct list_node {
+    void *data;
+    struct list_node *prev;
+    struct list_node *next;
+} list_node_t;
+
+/** List structure – exposed to callers. */
+struct list {
+    list_node_t *head;
+    list_node_t *tail;
+    list_copy_f copy;
+    list_free_f free;
+    size_t size;
+};
+
 typedef struct list list_t;
 
 /** Allocate a new empty list.
@@ -75,6 +89,15 @@ int list_push_back(list_t *l, const void *item);
  * @return 0 on success, -1 on allocation failure.
  */
 int list_push_front(list_t *l, const void *item);
+
+/** Insert a copy of @p item before the node @p pos. If @p pos is NULL, inserts at the back.
+ * @param l List handle (must not be NULL).
+ * @param pos Node before which the new element is inserted (may be NULL).
+ * @param item Pointer to the source item.
+ * @return 0 on success, -1 on allocation failure.
+ */
+int list_insert(list_t *l, list_node_t *pos, const void *item);
+
 
 /** Pop the front element, returning the owned pointer.
  * @param l List handle (must not be NULL).
