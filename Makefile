@@ -5,7 +5,7 @@
 
 # ── General tools & flags ─────────────────────────────────────
 CC      := gcc
-CFLAGS  := -Wall -Wextra -Wpedantic -std=c11 -g -I$(INC_DIR)
+CFLAGS  = -Wall -Wextra -Wpedantic -std=c11 -g -I$(INC_DIR)
 LDFLAGS := -g
 
 # ── Directory variables ─────────────────────────────────────
@@ -58,7 +58,7 @@ $(SHARED_LIB): $(OBJ_FILES) | $(LIB_DIR)
 
 # ── Build each test executable (statically linked) ────────────
 $(BIN_DIR)/%: $(TEST_DIR)/%.c $(STATIC_LIB) | $(BIN_DIR)
-	$(CC) $(CFLAGS) $< -L$(LIB_DIR) -lcutils -static -o $@
+	$(CC) $(CFLAGS) $< -L$(LIB_DIR) -lcutils -o $@
 
 # ── Clean target ─────────────────────────────────────────────
 .PHONY: clean
