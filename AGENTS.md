@@ -83,7 +83,7 @@ These points address behaviours that are easy to overlook without explicit guida
 
 - **Do not commit** any changes until I explicitly instruct you to do so.
 - For every commit you *do* make, add yourself as a co‑author using the format:
-  `Co-authored-by: gpt-oss:120b <gpt-oss@localhost>` (or appropriate identifying information).
+  `Co-authored-by: [insert model name here]` (appropriate information for model and service replaces [insert model name here])
 - Keep each commit **focused**: only group directly related files (e.g., a `.h` and its matching `.c`). If multiple unrelated pairs are changed, create separate commits, each with a concise message describing the change.
 - I will handle all branching, merging, pulling, and pushing operations. You must never run those git commands.
 
