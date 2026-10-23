@@ -75,7 +75,8 @@ char *string_append(char *s, const char *suffix)
 
     if (!s)
         s = string_alloc();
-    if (!s)\n        return NULL;
+    if (!s)
+        return NULL;
 
     vector_t *hdr = string_header(s);
     size_t cur_len = hdr->size;               /* current logical length */
