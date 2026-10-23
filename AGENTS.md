@@ -11,6 +11,9 @@
 - Use **blank‑line paragraph style**: separate logical sections with an empty line.
 - Header guards for `.h` files (`#ifndef … #define … … #endif`).
 - Include only the necessary standard headers.
+- Header files (*.h) belong in the `include/` directory.
+- Implementation files (*.c) belong in the `src/` directory.
+- Test programs (single‑file executables) belong in a `test/` directory.
 
 ## Formatting
 - **K&R brace style** (brace on the same line as the function/statement).
