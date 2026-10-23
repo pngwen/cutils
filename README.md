@@ -33,6 +33,7 @@ practical for embedded, educational, and systems-adjacent work.
 | `vector` | `vector.h`   | `void *`   | Generic dynamic array with doubling growth and an initial capacity of 1. |
 | `cstr`   | `cstr.h`     | `char *`   | Growable NUL-terminated string: append, concat, `printf`, `scanf`, and helpers. |
 | `map`    | `map.h`      | `map_t *`  | Ordered associative array over owned copies, implemented as an AVL tree. |
+| `deque`  | `deque.h`    | `deque_t`  | Generic double‑ended queue using a circular buffer, stable pointers after resize. |
 
 All three are built into a single library, `libcutils` (static `.a` and shared
 `.so`).
