@@ -6,3 +6,4 @@ bin/
 *.mod
 *.pch
 lib/
+obj/
