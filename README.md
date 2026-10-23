@@ -28,14 +28,16 @@ practical for embedded, educational, and systems-adjacent work.
 
 ## What's included
 
-| Module   | Header       | Handle     | Summary                                                                 |
-|----------|--------------|------------|-------------------------------------------------------------------------|
-| `vector` | `vector.h`   | `void *`   | Generic dynamic array with doubling growth and an initial capacity of 1. |
-| `cstr`   | `cstr.h`     | `char *`   | Growable NUL-terminated string: append, concat, `printf`, `scanf`, and helpers. |
-| `map`    | `map.h`      | `map_t *`  | Ordered associative array over owned copies, implemented as an AVL tree. |
-| `list`   | `list.h`    | `list_t`  | Generic doubly linked list with owned copies, exposing list and node structs. |
+| Module   | Header       | Handle      | Summary                                                                 |
+|----------|--------------|-------------|-------------------------------------------------------------------------|
+| `vector` | `vector.h`   | `void *`    | Generic dynamic array with doubling growth and an initial capacity of 1. |
+| `cstr`   | `cstr.h`     | `char *`    | Growable NUL-terminated string: append, concat, `printf`, `scanf`, and helpers. |
+| `map`    | `map.h`      | `map_t *`   | Ordered associative array over owned copies, implemented as an AVL tree. |
+| `deque`  | `deque.h`    | `deque_t`   | Generic double-ended queue using a circular buffer with stable element pointers. |
+| `list`   | `list.h`     | `list_t *`  | Generic doubly linked list with owned copies, exposing list and node structs. |
+| `set`    | `set.h`      | `set_t *`   | Generic set backed by `map`, with union and intersection operations. |
 
-All three are built into a single library, `libcutils` (static `.a` and shared
+All modules are built into a single library, `libcutils` (static `.a` and shared
 `.so`).
 
 ## Requirements
@@ -49,8 +51,8 @@ The library itself only needs a hosted C11 implementation and libc.
 ## Project layout
 
 ```
-include/   public headers (vector.h, cstr.h, map.h)
-src/       implementations (vector.c, cstr.c, map.c)
+include/   public headers (vector.h, cstr.h, map.h, deque.h, list.h, set.h)
+src/       implementations (vector.c, cstr.c, map.c, deque.c, list.c, set.c)
 test/      single-file test programs
 bin/       test executables        (generated)
 lib/       libcutils.a / .so       (generated)
@@ -71,14 +73,20 @@ The build produces:
 lib/libcutils.a
 lib/libcutils.so
 bin/cstr-test
+bin/deque-test
+bin/list-test
 bin/map-test
+bin/set-test
 ```
 
 Run the tests with:
 
 ```sh
 ./bin/cstr-test
+./bin/deque-test
+./bin/list-test
 ./bin/map-test
+./bin/set-test
 ```
 
 Test programs are statically linked against `lib/libcutils.a`.
@@ -317,6 +325,20 @@ void       *map_iter_get(map_iter_t *iter);
 int         map_foreach(map_t *m, int (*func)(void *item, void *ctx), void *ctx);
 ```
 
+### `set.h`
+
+```c
+set_t      *set_alloc(map_create_f create, map_cmp_f cmp, map_free_f free);
+void        set_free(set_t *s);
+int         set_add(set_t *s, const void *item);
+int         set_remove(set_t *s, const void *item);
+int         set_contains(set_t *s, const void *item);
+size_t      set_size(const set_t *s);
+int         set_foreach(set_t *s, int (*func)(void *item, void *ctx), void *ctx);
+set_t      *set_union(set_t *a, set_t *b);
+set_t      *set_intersect(set_t *a, set_t *b);
+```
+
 The headers are the authoritative reference; each declaration documents its
 parameters, return values, and ownership rules.
 
@@ -352,7 +374,10 @@ Each module has a corresponding single-file test program in `test/`:
 ```sh
 make
 ./bin/cstr-test
+./bin/deque-test
+./bin/list-test
 ./bin/map-test
+./bin/set-test
 ```
 
 Tests are compiled with `-Wall -Wextra -Wpedantic -std=c11` and linked
